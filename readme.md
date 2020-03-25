@@ -1,6 +1,6 @@
 # dotnet-vstemplate
 
-<img align="right" width="100px" height="100px" src="image/icon.png">
+<img align="right" width="100px" height="100px" src="img/icon.png">
 
 `dotnet-vstemplate` is a .NET Core tool for packing templates for the .NET Core Template Engine into VSIX project template packages.
 Generated VSIX packages support VS2017 and up.
@@ -41,8 +41,8 @@ These command line arguments can all take in multiple values, e.g. `--template-i
 
 | template.json | .vstemplate     | Argument        | Default |
 | ------------- | --------------- | --------------- | ------- |
-| name          | Name            |                 | NA      |
-| description   | Description     |                 | NA      |
+| name          | Name            | /               | NA      |
+| description   | Description     | /               | NA      |
 | /             | Icon            | --template-icon | /       |
 | defaultName   | DefaultName     | /               | /       |
 | tags/language | LanguageTag     | --language-tag  | csharp  |
