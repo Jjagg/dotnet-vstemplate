@@ -1,4 +1,4 @@
-# dotnet-vstemplate
+# dotnet-vstemplate [![Build status](https://github.com/Jjagg/dotnet-vstemplate/workflows/ci/badge.svg)](https://github.com/Jjagg/dotnet-vstemplate/actions)
 
 <img align="right" width="100px" height="100px" src="img/icon.png">
 

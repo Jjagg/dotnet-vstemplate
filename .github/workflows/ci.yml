@@ -1,10 +1,17 @@
-name: .NET Core
+name: ci
 
 on:
   push:
     branches: [ master ]
+    paths:
+    - '.github/workflows/ci.yml'
+    - 'Directory.Build.props'
+    - 'src/**'
   pull_request:
     branches: [ master ]
+
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
 
 jobs:
   build:
@@ -19,11 +26,11 @@ jobs:
       with:
         source-url: https://nuget.pkg.github.com/Jjagg/index.json
       env:
-        NUGET_AUTH_TOKEN: ${{secrets. GH_PACKAGE_TOKEN}}
+        NUGET_AUTH_TOKEN: ${{secrets.GH_PACKAGE_TOKEN}}
 
     - name: Pack NuGet
       working-directory: ./src
       run: dotnet pack -c Release -o out
 
     - name: Push NuGet package to GPR
-      run: dotnet nuget push ./src/out/*.nupkg --skip-duplicate
+      run: dotnet nuget push ./src/out/*.nupkg --skip-duplicate -k $NUGET_AUTH_TOKEN
