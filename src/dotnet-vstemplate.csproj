@@ -10,7 +10,7 @@
     <ToolCommandName>vstemplate</ToolCommandName>
 
     <PackageId>dotnet-vstemplate</PackageId>
-    <PackageIcon>img/icon.png</PackageIcon>
+    <PackageIcon>icon.png</PackageIcon>
     <RepositoryUrl>https://github.com/Jjagg/VSTemplate</RepositoryUrl>
     <Authors>Jesse Gielen</Authors>
     <Description>Pack dotnet templating templates into a VSIX to install the templates in Visual Studio.</Description>
@@ -20,7 +20,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="img/icon.png" Pack="true" PackagePath="/" />
+    <None Include="../img/icon.png" Pack="true" PackagePath="/" />
   </ItemGroup>
 
   <ItemGroup>
