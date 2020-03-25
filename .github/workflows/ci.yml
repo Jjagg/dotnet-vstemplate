@@ -17,10 +17,13 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.201
-    - name: Install dependencies
+        source-url: https://nuget.pkg.github.com/Jjagg/index.json
+      env:
+        NUGET_AUTH_TOKEN: ${{secrets. GH_PACKAGE_TOKEN}}
+
+    - name: Pack NuGet
       working-directory: ./src
-      run: dotnet restore
-    - name: Build
-      working-directory: ./src
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet pack -c Release -o out
+
+    - name: Push NuGet package to GPR
+      run: dotnet nuget push ./src/out/*.nupkg --skip-duplicate
