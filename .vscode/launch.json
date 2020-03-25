@@ -1,0 +1,27 @@
+{
+   // Use IntelliSense to find out which attributes exist for C# debugging
+   // Use hover for the description of the existing attributes
+   // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
+   "version": "0.2.0",
+   "configurations": [
+       {
+           "name": "Run",
+           "type": "coreclr",
+           "request": "launch",
+           "preLaunchTask": "build",
+           "program": "${workspaceFolder}/bin/Debug/netcoreapp3.1/dotnet-vstemplate.dll",
+           "args": ["-s", "test\\Console.Templates.1.0.0.nupkg", "-o", "test\\obj", "--more-info", "http://example.com/more-info",
+                    "--license-file", "notes.txt", "--release-notes", "http://example.org/release-notes",
+                    "--package-icon", "test/project-icon.png", "--preview-img", "img/icon.png",
+                    "--package-tags", "hello world template", "--getting-started", "http://example.com/getting-started",
+                    "--platform-tags", "*One*=One", "*Two*=Two",
+                    "--language-tag", "*One*=csharp", "*Two*=fsharp",
+                    "--type-tags", "console",
+                    "--template-icon", "*One*=test/project-icon.png", "*Two*=img/icon.png",
+                    "--force"],
+           "cwd": "${workspaceFolder}",
+           "stopAtEntry": false,
+           "console": "internalConsole"
+       }
+    ]
+}

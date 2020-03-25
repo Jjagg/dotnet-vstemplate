@@ -1,0 +1,845 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://schemas.microsoft.com/developer/vstemplate/2005" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.microsoft.com/developer/vstemplate/2005" elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <xs:element name="VSTemplate">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="TemplateData" />
+        <xs:element name="TemplateContent">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="TemplateContent" _locComment="" -->Contains the content for the template
+            </xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:choice>
+                <xs:element name="ProjectCollection">
+                  <xs:annotation>
+                    <xs:documentation>
+                      <!-- _locID_text="ProjectCollection" _locComment="" -->Specifies a collection of links to other templates. Used for multi-project templates
+                    </xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:choice minOccurs="0" maxOccurs="unbounded">
+                      <xs:element ref="ProjectTemplateLink" minOccurs="0" maxOccurs="unbounded"/>
+                      <xs:element ref="SolutionFolder" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:choice>
+                  </xs:complexType>
+                </xs:element>
+                <xs:element name="Project">
+                  <xs:annotation>
+                    <xs:documentation>
+                      <!-- _locID_text="TemplateContent.Project" _locComment="" -->Describes the contents of the project template
+                    </xs:documentation>
+                  </xs:annotation>
+                  <xs:complexType>
+                    <xs:choice minOccurs="0" maxOccurs="unbounded">
+                      <xs:element ref="Folder" minOccurs="0" maxOccurs="unbounded"/>
+                      <xs:element ref="ProjectItem" minOccurs="0" maxOccurs="unbounded"/>
+                    </xs:choice>
+                    <xs:attribute name="File" type="xs:string" use="required">
+                      <xs:annotation>
+                        <xs:documentation>
+                          <!-- _locID_text="TemplateContent.File" _locComment="" -->Specifies the Name of the project file
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="TargetFileName" type="xs:string" use="optional">
+                      <xs:annotation>
+                        <xs:documentation>
+                          <!-- _locID_text="TemplateContent.TargetFileName" _locComment="" -->If specified, will replace the File Name defined by the File attribute
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="ReplaceParameters" type="xs:boolean" use="optional">
+                      <xs:annotation>
+                        <xs:documentation>
+                          <!-- _locID_text="TemplateContent.ReplaceParameters" _locComment="" -->If this is set to true on any artifact in a template, the template wizard will perform parameter substitution. The format for parameters is $[parameter]$
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
+                    <xs:attribute name="IgnoreProjectParameter" type="xs:string" use="optional">
+                      <xs:annotation>
+                        <xs:documentation>
+                          <!-- _locID_text="TemplateContent.IgnoreProjectParameter" _locComment="" -->This is set to a parameter name and if it exists and it's value is 'true' the project will not be added into the solution. The format for parameters is $[parameter]$
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:attribute>
+                  </xs:complexType>
+                </xs:element>
+                <xs:sequence>
+                  <xs:element name="References" minOccurs="0">
+                    <xs:annotation>
+                      <xs:documentation>
+                        <!-- _locID_text="TemplateContent.References" _locComment=""-->Specifies any references which should be added to a project when the item is added
+                      </xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                      <xs:sequence>
+                        <xs:element name="Reference" minOccurs="0" maxOccurs="unbounded">
+                          <xs:annotation>
+                            <xs:documentation>
+                              <!-- _locID_text="TemplateContent.Reference" _locComment=""-->Specifies the references to be added to the project
+                            </xs:documentation>
+                          </xs:annotation>
+                          <xs:complexType>
+                            <xs:choice>
+                              <xs:element name="Assembly" type="xs:string">
+                                <xs:annotation>
+                                  <xs:documentation>
+                                    <!-- _locID_text="TemplateContent.Assembly" _locComment=""-->Required if reference element is specified for an Assembly reference.  This tag supports both simple text and strong name assembly references
+                                  </xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                              <xs:element name="SDKReference" type="xs:string">
+                                <xs:annotation>
+                                  <xs:documentation>
+                                    <!-- _locID_text="TemplateContent.SDKReference" _locComment=""-->Required if reference element is specified for SDK references.
+                                  </xs:documentation>
+                                </xs:annotation>
+                              </xs:element>
+                            </xs:choice>
+                          </xs:complexType>
+                        </xs:element>
+                      </xs:sequence>
+                    </xs:complexType>
+                  </xs:element>
+                  <xs:element ref="Folder" minOccurs="0" maxOccurs="unbounded"/>
+                  <xs:element name="ProjectItem" minOccurs="0" maxOccurs="unbounded">
+                    <xs:annotation>
+                      <xs:documentation>
+                        <!-- _locID_text="ProjectItem" _locComment="" -->Describes the project item
+                      </xs:documentation>
+                    </xs:annotation>
+                    <xs:complexType>
+                      <xs:simpleContent>
+                        <xs:extension base="xs:string">
+                          <xs:attribute name="SubType" type="xs:string" use="optional">
+                            <xs:annotation>
+                              <xs:documentation>
+                                <!-- _locID_text="ProjectItem.SubType" _locComment=""-->Sets the Subtype for the item in the Project file. Used for multi-file item templates when an item has a SubType which specifies how it should be opened in the Editor.
+                              </xs:documentation>
+                            </xs:annotation>
+                          </xs:attribute>
+                          <xs:attribute name="CustomTool" type="xs:string" use="optional">
+                            <xs:annotation>
+                              <xs:documentation>
+                                <!-- _locID_text="ProjectItem.CustomTool" _locComment=""-->Sets the CustomTool for the item in the Project file.
+                              </xs:documentation>
+                            </xs:annotation>
+                          </xs:attribute>
+                          <xs:attribute name="ItemType" type="xs:string" use="optional">
+                            <xs:annotation>
+                              <xs:documentation>
+                                <!-- _locID_text="ProjectItem.ItemType" _locComment=""-->Sets the ItemType for the item in the Project file.
+                              </xs:documentation>
+                            </xs:annotation>
+                          </xs:attribute>
+                          <xs:attribute name="ReplaceParameters" type="xs:boolean" use="optional">
+                            <xs:annotation>
+                              <xs:documentation>
+                                <!-- _locID_text="ProjectItem.ReplaceParameters" _locComment="" -->If this is set to true the template wizard will perform parameter substitution. The format for parameters is $[parameter]$
+                              </xs:documentation>
+                            </xs:annotation>
+                          </xs:attribute>
+                          <xs:attribute name="TargetFileName" type="xs:string" use="optional">
+                            <xs:annotation>
+                              <xs:documentation>
+                                <!-- _locID_text="ProjectItem.TargetFileName" _locComment="" -->If specified, will replace the disk file name for the project item
+                              </xs:documentation>
+                            </xs:annotation>
+                          </xs:attribute>
+                          <xs:attribute name="DependentUpon" type="xs:string" use="optional">
+                            <xs:annotation>
+                              <xs:documentation>
+                                <!-- _locID_text="DependentUpon" _locComment="" -->Can be used to specify that a file depends on another file
+                              </xs:documentation>
+                            </xs:annotation>
+                          </xs:attribute>
+                          <xs:attribute name="OpenInEditor" type="xs:string" use="optional">
+                            <xs:annotation>
+                              <xs:documentation>
+                                <!-- _locID_text="OpenInEditor" _locComment="" -->Boolean value or AppId expression (e.g. "!blend") that indicates if the file should be opened in the VS editor
+                              </xs:documentation>
+                            </xs:annotation>
+                          </xs:attribute>
+                          <xs:attribute name="OpenOrder" type="xs:int" use="optional">
+                            <xs:annotation>
+                              <xs:documentation>
+                                <!-- _locID_text="OpenOrder" _locComment="" -->Specifies the order in which multiple files should be opened when using OpenInEditor tag
+                              </xs:documentation>
+                            </xs:annotation>
+                          </xs:attribute>
+                          <xs:attribute name="OpenInWebBrowser" type="xs:boolean" use="optional">
+                            <xs:annotation>
+                              <xs:documentation>
+                                <!-- _locID_text="OpenInWebBrowser" _locComment="" -->Can be used to open HTML files and text files which are local to the project. None of the following are supported for OpenInWebBrowser: opening any non-HTML or non-text file, supporting OpenOrder, opening external (http://address) websites.
+                              </xs:documentation>
+                            </xs:annotation>
+                          </xs:attribute>
+                          <xs:attribute name="OpenInHelpBrowser" type="xs:boolean" use="optional">
+                            <xs:annotation>
+                              <xs:documentation>
+                                <!-- _locID_text="OpenInHelpBrowser" _locComment="" -->Can be used to open HTML files and text files which are local to the project. None of the following are supported for OpenInHelpBrowser: opening any non-HTML or non-text file, opening external (http://address) websites. If this is specified the OpenInEditor and OpenOrder tags will be ignored.
+                              </xs:documentation>
+                            </xs:annotation>
+                          </xs:attribute>
+                        </xs:extension>
+                      </xs:simpleContent>
+                    </xs:complexType>
+                  </xs:element>
+                </xs:sequence>
+              </xs:choice>
+              <xs:element name="CustomParameters" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>
+                    <!-- _locID_text="TemplateContent.CustomParameters" _locComment="" -->Specifies any custom parameters which should be passed to the template wizard when it is run to do parameter replacement.
+                  </xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="CustomParameter" maxOccurs="unbounded">
+                      <xs:annotation>
+                        <xs:documentation>
+                          <!-- _locID_text="TemplateContent.CustomParameter" _locComment="" -->Specifies a custom parameter (name/value pair) to pass to the wizard
+                        </xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:attribute name="Name" type="xs:string" use="required"/>
+                        <xs:attribute name="Value" type="xs:string" use="required"/>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="PreferedSolutionConfiguration" type="xs:string">
+              <xs:annotation>
+                <xs:documentation>
+                  <!-- _locID_text="TemplateContent.PreferedSolutionConfiguration" _locComment="" -->Specifies which solution configuration should be selected by default. E.g "Debug|x86"
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+            <xs:attribute name="BuildOnLoad" type="xs:boolean">
+              <xs:annotation>
+                <xs:documentation>
+                  <!-- _locID_text="TemplateContent.BuildOnLoad" _locComment="" -->Specifies if the project should be automatically built build after using the template
+                </xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="WizardExtension" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="WizardExtension" _locComment="" -->Specifies the custom wizard content to be run at project creation time
+            </xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Assembly" maxOccurs="unbounded"/>
+              <xs:element name="FullClassName" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="WizardData" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax"/>
+            </xs:sequence>
+            <xs:attribute name="Name" type="xs:string" use="optional"/>
+          </xs:complexType>
+        </xs:element>
+        <!-- Used in the Visual Studio SDK to declare misc files in the vstemplate -->
+        <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded" />
+      </xs:sequence>
+      <xs:attribute name="Type" type="xs:string" use="required"/>
+      <xs:attribute name="Version" type="xs:string" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <!--The following are reference elements and complex types which are referenced in the main XSD-->
+  <xs:element name="ProjectTemplateLink">
+    <xs:annotation>
+      <xs:documentation>
+        <!-- _locID_text="ProjectTemplateLink" _locComment="" -->Specifies a link to another project template (by .vstemplate file) to use in the collection
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="ProjectName" type="xs:string" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                <!-- _locID_text="ProjectTemplateLink.ProjectName" _locComment="" -->Specifies the name of the project to be included as a link
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="CopyParameters" type="xs:boolean" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                <!-- _locID_text="ProjectTemplateLink.CopyParameters" _locComment="" -->If this is set to 'true', all parameters/variables in the main template will be available in the nested vstemplates with an 'ext_' prefix. For example the main template parameter $safeprojectname$ will become $ext_safeprojectname$ in the nested template - the nested template will therefore have $safeprojectname$ and $ext_safeprojectname$.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SolutionFolder">
+    <xs:annotation>
+      <xs:documentation>
+        <!-- _locID_text="SolutionFolder" _locComment="" -->Used to specify a solution folder structure in the .vstemplate
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="ProjectTemplateLink" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="SolutionFolder" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:choice>
+      <xs:attribute name="Name" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            <!-- _locID_text="SolutionFolder.Name" _locComment="" -->This will be the visible name of the Solution Folder in the Visual Studio Solution Explorer. You can use a parameter/variable to make the value dynamic, for example $MyCustomFolderName$ - this will enable you to dynamically set the value in a wizard extension or one you have defined in a CustomParameter element. You can also use a well known automatically populated parameter such as $projectname$.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="CreateOnDisk" type="xs:boolean" use="optional">
+        <xs:annotation>
+          <xs:documentation>
+            <!-- _locID_text="SolutionFolder.CreateOnDisk" _locComment="" -->Specifies whether a physical folder will be created on disk to match the solution folder
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ProjectItem">
+    <xs:annotation>
+      <xs:documentation>
+        <!-- _locID_text="ProjectItem" _locComment="" -->Specifies an item in the project
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="SubType" type="xs:string" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                <!-- _locID_text="ProjectItem.SubType" _locComment=""-->Sets the Subtype for the item in the Project file. Used for multi-file item templates when an item has a SubType which specifies how it should be opened in the Editor
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="CustomTool" type="xs:string" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                <!-- _locID_text="ProjectItem.CustomTool" _locComment=""-->Sets the CustomTool for the item in the Project file
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="ItemType" type="xs:string" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                <!-- _locID_text="ProjectItem.ItemType" _locComment=""-->Sets the ItemType for the item in the Project file
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="TargetFileName" type="xs:string" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                <!-- _locID_text="ProjectItem.TargetFileName" _locComment="" -->Specifies the Target File Name for a file within the project
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="ReplaceParameters" type="xs:boolean" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                <!-- _locID_text="ProjectItem.ReplaceParameters2" _locComment="" -->If this is set to true the template wizard will perform parameter substitution. The format for parameters is $[parameter]$
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="OpenInEditor" type="xs:string" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                <!-- _locID_text="OpenInEditor" _locComment="" -->Boolean value or AppId expression (e.g. "!blend") that indicates if the file should be opened in the VS editor
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="OpenOrder" type="xs:int" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                <!-- _locID_text="OpenOrder" _locComment="" -->Specifies the order in which multiple files should be opened when using OpenInEditor tag
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="OpenInWebBrowser" type="xs:boolean" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                <!-- _locID_text="OpenInWebBrowser" _locComment="" -->Can be used to open HTML files and text files which are local to the project. None of the following are supported for OpenInWebBrowser: opening any non-HTML or non-text file, supporting OpenOrder, opening external (http://address) websites.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:attribute name="OpenInHelpBrowser" type="xs:boolean" use="optional">
+            <xs:annotation>
+              <xs:documentation>
+                <!-- _locID_text="OpenInHelpBrowser" _locComment="" -->Can be used to open HTML files and text files which are local to the project. None of the following are supported for OpenInHelpBrowser: opening any non-HTML or non-text file, opening external (http://address) websites. If this is specified the OpenInEditor and OpenOrder tags will be ignored.
+              </xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Folder">
+    <xs:annotation>
+      <xs:documentation>
+        <!-- _locID_text="Folder" _locComment="" -->This element can be used to specify a project folder
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="ProjectItem" minOccurs="0" maxOccurs="unbounded"/>
+        <xs:element ref="Folder" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:choice>
+      <xs:attribute name="Name" type="xs:string" use="required">
+        <xs:annotation>
+          <xs:documentation>
+            <!-- _locID_text="Folder.Name" _locComment="" -->Specifies the name of the folder
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+      <xs:attribute name="TargetFolderName" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            <!-- _locID_text="Folder.TargetFolderName" _locComment="" -->Specifies the target name for a folder
+          </xs:documentation>
+        </xs:annotation>
+      </xs:attribute>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TemplateData">
+    <xs:annotation>
+      <xs:documentation>
+        <!-- _locID_text="TemplateData" _locComment="" -->Includes the content for the appearance of the Template in the New Project Dialog
+      </xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="Name" type="NameDescriptionIcon" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="TemplateData.Name" _locComment="" -->Specifies the name, as a string, of the template as it will appear in the New Project / Add New Item dialog
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Description" type="NameDescriptionIcon" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="Description" _locComment="" -->Specifies the description, as a string, of the template as it will appear in the New Project / Add New Item dialog
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Icon" type="NameDescriptionIcon" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="Icon" _locComment="" -->Specifies the icon, as a filename, for the template icon that will appear in the New Project / Add New Item dialog
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PreviewImage" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="PreviewImage" _locComment="" -->Specifies the preview image, as a filename, for the preview image that will appear in the New Project / Add New Item dialog
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ProjectType" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="ProjectType" _locComment="" -->Specifies the Project Type, as a string, of the template.  This is usually: CSharp, VisualBasic or Web. If you will include AppliesTo element, then ProjectType is optional.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ProjectSubType" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="ProjectSubType" _locComment="" -->Specifies the Project Subtype (if any), as a string, of the template.  This value specifies the aggregate project system for an Item Template.  Possible values include: SmartDevice-NETCFv1, SmartDevice-NETCFv2.  For Web projects, possible ProjectSubTypes include: CSharp and VisualBasic.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TemplateID" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="TemplateID" _locComment="" -->Specifies an optional unique identifier, as a string, for the template.  If none is specified, the Name will be used as the template identifier.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="TemplateGroupID" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="TemplateGroupID" _locComment="" -->Specifies an optional group identifier, as a string, for the template.  Some kinds of projects require this for the item template to appear in the Add New Item dialog.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="AppliesTo" type="xs:string" minOccurs="0" maxOccurs="1">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="AppliesTo" _locComment="" -->Specifies an optional expression to match one or more capabilites see http://msdn.microsoft.com/en-us/library/vstudio/microsoft.visualstudio.shell.interop.ivsbooleansymbolexpressionevaluator.evaluateexpression.aspx. Capabilities are exposed by project types via the hierarchy as a property VSHPROPID_ProjectCapabilities. This enables the template to be shared by multiple project types which have common applicable capabilities.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="SortOrder" type="xs:integer" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="SortOrder" _locComment="" -->Specifies template order of appearance in the New Project Dialog.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CreateNewFolder" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="CreateNewFolder" _locComment="" -->Specifies if a new folder should be created for the project.  If omitted, this defaults to FALSE.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="DefaultName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="DefaultName" _locComment="" -->Specifies the Name to be displayed in the name field of the New Project / Add New Item dialog
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ProvideDefaultName" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="ProvideDefaultName" _locComment="" -->Specifies if a Default Name should be provided in the name field of the New Project / Add New Item dialog
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="PromptForSaveOnCreation" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="PromptForSaveOnCreation" _locComment="" -->Specifies if the project should be saved upon creation.  Not all project types support this and this value may be ignored for those
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="EnableLocationBrowseButton" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="EnableLocationBrowseButton" _locComment="" -->Specifies is the user can browse to a different directory to create the solution
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="EnableEditOfLocationField" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="EnableEditOfLocationField" _locComment="" -->Specifies is the user can edit the location field
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="Hidden" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="Hidden" _locComment="" -->Specifies that the template should not appear in the New Project / Add New Item dialog.  If specified, no other elements inside the TemplateData are required. No errors will be logged if the template is malformed or otherwise in error
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="LocationFieldMRUPrefix" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="LocationFieldMRUPrefix" _locComment="" -->Specifies the Most Recently Used paths in the New Project / New Item dialog. This tag is should only be used for internally (VS or VSIP) produced templates.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="NumberOfParentCategoriesToRollUp" type="xs:integer" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="NumberOfParentCategoriesToRollUp" _locComment="" -->Displays the template in parent categories (roll up display). This tag is only used for internally (VS or VSIP) produced templates. Ignored for user templates
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="CreateInPlace" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="CreateInPlace" _locComment="" -->Create project files directly at the target location.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="BuildOnLoad" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="BuildOnLoad" _locComment="" -->Builds solution immediately after creation
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="BuildProjectOnLoad" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="BuildProjectOnLoad" _locComment="" -->Builds the newly added project only immediately after creation
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="ShowByDefault" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="ShowByDefault" _locComment="" -->If set to false will only display the template under the specified TemplateGroupID. Default or unspecified is true.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="LocationField" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="LocationField" _locComment="" -->Specifies whether the location field is enabled, disabled or hidden.
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="Enabled"/>
+              <xs:enumeration value="Disabled"/>
+              <xs:enumeration value="Hidden"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="SupportsMasterPage" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="SupportsMasterPage" _locComment="" -->Specifies whether the template supports having a master page (Web option)
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="SupportsCodeSeparation" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="SupportsCodeSeparation" _locComment="" -->Specifies whether the template supports code separation (Web option)
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="SupportsLanguageDropdown" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="SupportsLanguageDropDown" _locComment="" -->Specifies whether the template is identical for multiple languages and a language dropdown should appear (Web option)
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="AppendDefaultFileExtension" type="xs:boolean" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="AppendDefaultFileExtension" _locComment="" -->Specifies whether the template should append the default file extension
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="RequiredFrameworkVersion" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="RequiredFrameworkVersion" _locComment="" -->Specifies the minimum .Net Framework version required by the template
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="2.0"/>
+              <xs:enumeration value="3.0"/>
+              <xs:enumeration value="3.5"/>
+              <xs:enumeration value="4.0"/>
+              <xs:enumeration value="4.5"/>
+              <xs:enumeration value="4.5.1"/>
+              <xs:enumeration value="4.5.2"/>
+              <xs:enumeration value="4.6"/>
+              <xs:enumeration value="4.6.1"/>
+              <xs:enumeration value="4.6.2"/>
+              <xs:enumeration value="4.7"/>
+              <xs:enumeration value="4.7.1"/>
+              <xs:enumeration value="4.7.2"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="FrameworkVersion" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="FrameworkVersion" _locComment="" -->Deprecated. Use RequiredFrameworkVersion instead
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="MaxFrameworkVersion" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="MaxFrameworkVersion" _locComment="" -->Specifies the maximum .Net Framework version supported by the template
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="2.0"/>
+              <xs:enumeration value="3.0"/>
+              <xs:enumeration value="3.5"/>
+              <xs:enumeration value="4.0"/>
+              <xs:enumeration value="4.5"/>
+              <xs:enumeration value="4.5.1"/>
+              <xs:enumeration value="4.5.2"/>
+              <xs:enumeration value="4.6"/>
+              <xs:enumeration value="4.6.1"/>
+              <xs:enumeration value="4.6.2"/>
+              <xs:enumeration value="4.7"/>
+              <xs:enumeration value="4.7.1"/>
+              <xs:enumeration value="4.7.2"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="TargetPlatformName" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="TargetPlatformName" _locComment="" -->Specifies the name of the platform targeted by the template.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="RequiredPlatformVersion" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="RequiredPlatformVersion" _locComment="" -->Specifies the minimum version of the platform indicated by TargetPlatformName required by the template.
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="MaxOSVersion" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="MaxOSVersion" _locComment="" -->Maximum supported OS version - Expected to be a Windows version e.g. "6.2.9200" for Windows 8
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="SpecialTemplateType" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="SpecialTemplateType" _locComment="" -->Special project template type: EmptyShared (for empty shared project), EmptyNode (for empty head node for one app)
+            </xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="EmptyShared"/>
+              <xs:enumeration value="EmptyNode"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="CustomDataSignature" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="CustomDataSignature" _locComment="" -->Specifies the text signature to locate the customdata
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="AppIdFilter" type="xs:string" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="AppIdFilter" _locComment="" -->Specifies template availability based on AppId. Syntax: “[-|!]appid1{;[-|!]appid2}” (where "-" and "!" can be used for negation). E.g. "blend"
+            </xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="LanguageTag">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="LanguageTag" _locComment="" -->Specifies a programming language tag on a template.
+            </xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:simpleContent>
+              <xs:extension base="AllLanguageTagValues">
+                <xs:attribute name="Id"/>
+                <xs:attribute name="Package"/>
+              </xs:extension>
+            </xs:simpleContent>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="PlatformTag">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="PlatformTag" _locComment="" -->Specifies a platform tag on a template.
+            </xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:simpleContent>
+              <xs:extension base="AllPlatformTagValues">
+                <xs:attribute name="Id"/>
+                <xs:attribute name="Package"/>
+              </xs:extension>
+            </xs:simpleContent>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ProjectTypeTag">
+          <xs:annotation>
+            <xs:documentation>
+              <!-- _locID_text="ProjectTypeTag" _locComment="" -->Specifies a project type tag on a template.
+            </xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:simpleContent>
+              <xs:extension base="AllProjectTypeTagValues">
+                <xs:attribute name="Id"/>
+                <xs:attribute name="Package"/>
+              </xs:extension>
+            </xs:simpleContent>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="LanguageTagValues">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Cpp"/>
+      <xs:enumeration value="CSharp"/>
+      <xs:enumeration value="Java"/>
+      <xs:enumeration value="FSharp"/>
+      <xs:enumeration value="Javascript"/>
+      <xs:enumeration value="Python"/>
+      <xs:enumeration value="R"/>
+      <xs:enumeration value="Typescript"/>
+      <xs:enumeration value="VisualBasic"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="PlatformTagValues">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Windows"/>
+      <xs:enumeration value="Linux"/>
+      <xs:enumeration value="iOS"/>
+      <xs:enumeration value="macOS"/>
+      <xs:enumeration value="Android"/>
+      <xs:enumeration value="Azure"/>
+      <xs:enumeration value="tvOS"/>
+      <xs:enumeration value="Xbox"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ProjectTypeTagValues">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Cloud"/>
+      <xs:enumeration value="Console"/>
+      <xs:enumeration value="DataScience"/>
+      <xs:enumeration value="MachineLearning"/>
+      <xs:enumeration value="Desktop"/>
+      <xs:enumeration value="Extension"/>
+      <xs:enumeration value="Games"/>
+      <xs:enumeration value="IoT"/>
+      <xs:enumeration value="Library"/>
+      <xs:enumeration value="Mobile"/>
+      <xs:enumeration value="Office"/>
+      <xs:enumeration value="Other"/>
+      <xs:enumeration value="Service"/>
+      <xs:enumeration value="Test"/>
+      <xs:enumeration value="UWP"/>
+      <xs:enumeration value="Web"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="AllLanguageTagValues">
+    <xs:union memberTypes="LanguageTagValues CustomTagsString"/>
+  </xs:simpleType>
+  <xs:simpleType name="AllPlatformTagValues">
+    <xs:union memberTypes="PlatformTagValues CustomTagsString"/>
+  </xs:simpleType>
+  <xs:simpleType name="AllProjectTypeTagValues">
+    <xs:union memberTypes="ProjectTypeTagValues CustomTagsString"/>
+  </xs:simpleType>
+  <xs:simpleType name="CustomTagsString">
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+  <xs:complexType name="NameDescriptionIcon">
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="Package" type="xs:string" use="optional"/>
+        <xs:attribute name="ID" type="xs:string" use="optional"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+</xs:schema>

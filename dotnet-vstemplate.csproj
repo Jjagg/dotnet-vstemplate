@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>vstemplate</ToolCommandName>
+
+    <PackageId>dotnet-vstemplate</PackageId>
+    <PackageIcon>img/icon.png</PackageIcon>
+    <RepositoryUrl>https://github.com/Jjagg/VSTemplate</RepositoryUrl>
+    <Authors>Jesse Gielen</Authors>
+    <Description>Pack dotnet templating templates into a VSIX to install the templates in Visual Studio.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageTags>dotnet-tool template vsix vs visualstudio</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="img/icon.png" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop" Version="2.3.2262-g94fae01e" />
+    <PackageReference Include="NuGet.Packaging" Version="5.5.0" />
+    <PackageReference Include="System.Commandline" Version="2.0.0-beta1.20158.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="test/*" />
+    <Compile Remove="tmpl/*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="tmpl/vsix-template.csproj.txt" />
+    <EmbeddedResource Include="tmpl/source.extension.vsixmanifest" />
+  </ItemGroup>
+
+</Project>
