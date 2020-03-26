@@ -23,10 +23,14 @@ jobs:
         fetch-depth: 0
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
+      with:
+        source-url: https://nuget.pkg.github.com/jjagg/index.json
+      env:
+        NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
     - name: Pack NuGet
       working-directory: ./src
       run: dotnet pack -c Release -o out
 
     - name: Push NuGet package to GPR
-      run: dotnet nuget push src/out/*.nupkg --skip-duplicate -s https://nuget.pkg.github.com/jjagg/index.json -k ${{ secrets.GITHUB_TOKEN }}
+      run: dotnet nuget push src/out/*.nupkg --skip-duplicate
