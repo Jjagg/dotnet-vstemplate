@@ -1,0 +1,21 @@
+{
+  "author": "Jesse Gielen",
+  "classifications": [],
+  "description": "VSIX from dotnet templating",
+  "name": "Console1",
+  "defaultName": "MyProject",
+  "identity": "MyConsole.One.Template.CSharp",
+  "groupIdentity": "MyConsole.One.Template",
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "shortName": "console1",
+  "sourceName": "Console1",
+  "guids": [],
+  "primaryOutputs": [
+    {
+      "path": "Console1.csproj"
+    }
+  ]
+}

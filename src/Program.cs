@@ -115,7 +115,7 @@ namespace VSTemplate
 
             l.Log("Parsing NuGet metadata.");
 
-            var pkg = await NuPackage.Open("test\\Console.Templates.1.0.0.nupkg");
+            var pkg = await NuPackage.Open(source);
             var metadata = pkg.Metadata;
             var vsixProps = VsixProperties.FromNuspec(metadata);
 
@@ -133,8 +133,11 @@ namespace VSTemplate
             if (releaseNotes != null) vsixProps.ReleaseNotes = releaseNotes;
             if (packageIcon != null) vsixProps.Icon = packageIcon;
             if (previewImg != null) vsixProps.PreviewImage = previewImg;
-            var splitPackageTags = packageTags.SelectMany(ts => ts.Split(new char[0], StringSplitOptions.RemoveEmptyEntries));
-            if (packageTags != null) vsixProps.Tags = string.Join(';', splitPackageTags);
+            if (packageTags != null)
+            {
+                var splitPackageTags = packageTags.SelectMany(ts => ts.Split(new char[0], StringSplitOptions.RemoveEmptyEntries));
+                vsixProps.Tags = string.Join(';', splitPackageTags);
+            }
             if (gettingStarted != null) vsixProps.GettingStartedGuide = gettingStarted;
 
             var archive = pkg.Archive;
@@ -187,7 +190,6 @@ namespace VSTemplate
             foreach (var ctx in templateContexts)
             {
                 var zipFileName = ctx.TemplateJsonProps.Identity + ".zip";
-                var zipPath = Path.Combine(obj, zipFileName);
 
                 var tmpZipFolder = Path.Combine(obj, "zip", ctx.TemplateJsonProps.Identity);
                 Directory.CreateDirectory(tmpZipFolder);

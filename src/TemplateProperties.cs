@@ -31,18 +31,24 @@ namespace VSTemplate
 
         public static TemplateProperties ParseTemplateJson(string text)
         {
+            JsonElement? GetProp(JsonElement root, string name)
+                => root.TryGetProperty(name, out var prop) ? (JsonElement?) prop : null;
+            string GetPropStr(JsonElement root, string name)
+                => root.TryGetProperty(name, out var prop) ? prop.GetString() : null;
+
             var jd = JsonDocument.Parse(text);
             var root = jd.RootElement;
 
             var props = new TemplateProperties();
 
-            props.Name = root.GetProperty("name").GetString();
-            props.Description = root.GetProperty("description").GetString();
-            props.Author = root.GetProperty("author").GetString();
-            props.DefaultName = root.GetProperty("defaultName").GetString();
-            props.Identity = root.GetProperty("identity").GetString();
-            props.GroupIdentity = root.GetProperty("groupIdentity").GetString();
-            var language = root.GetProperty("tags").GetProperty("language").GetString();
+            props.Name = GetPropStr(root, "name");
+            props.Description = GetPropStr(root, "description");
+            props.Author = GetPropStr(root, "author");
+            props.DefaultName = GetPropStr(root, "defaultName");
+            props.Identity = GetPropStr(root, "identity");
+            props.GroupIdentity = GetPropStr(root, "groupIdentity");
+            var tags = GetProp(root, "tags");
+            var language = tags == null ? null : GetPropStr(tags.Value, "language");
             props.LanguageTag = language switch
             {
                 "C#" => "csharp",
