@@ -11,7 +11,7 @@
 
     <PackageId>dotnet-vstemplate</PackageId>
     <PackageIcon>icon.png</PackageIcon>
-    <RepositoryUrl>https://github.com/Jjagg/VSTemplate</RepositoryUrl>
+    <RepositoryUrl>https://github.com/Jjagg/dotnet-vstemplate</RepositoryUrl>
     <Authors>Jesse Gielen</Authors>
     <Description>Pack dotnet templating templates into a VSIX to install the templates in Visual Studio.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
