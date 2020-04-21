@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.CommandLine;
+using System.CommandLine.Parsing;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -61,7 +62,12 @@ namespace VSTemplate
                 }
             }.WithHandler(CommandHandler.Create(Delegate.CreateDelegate(typeof(PackVsixDelegate), null, typeof(Program).GetMethod(nameof(PackVsix)))));
 
-            return root.InvokeAsync(args);
+            var cmdConfig = new CommandLineConfiguration(
+                new[] { root },
+                responseFileHandling: ResponseFileHandling.ParseArgsAsSpaceSeparated);
+            var parser = new Parser(cmdConfig);
+
+            return parser.InvokeAsync(args);
         }
 
         private delegate Task<int> PackVsixDelegate(
