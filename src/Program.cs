@@ -111,7 +111,6 @@ namespace VSTemplate
                 return 1;
             }
 
-
             l.Log($"Generating VSIX template package for '{source}'.");
 
             var templateIconMappings = templateIcon?.Select(s => new TemplatePropertyMapping(s));
@@ -185,7 +184,7 @@ namespace VSTemplate
             var vsixDir = Path.Combine(obj, "Vsix");
             Directory.CreateDirectory(vsixDir);
 
-            var vsixProject = VsixProject.Create(vsixDir, vsixProps);
+            var vsixProject = VsixProject.Create(vsixDir, vsixProps, l);
 
             var vsixProjectPath = Path.Combine(vsixDir, "Vsix.csproj");
 
@@ -223,6 +222,10 @@ namespace VSTemplate
             }
 
             var builtVsixPath = Path.Combine(vsixDir, "bin", "Vsix.vsix");
+            var outputVsixDir = Path.GetDirectoryName(vsix);
+            if (!Directory.Exists(outputVsixDir))
+                Directory.CreateDirectory(outputVsixDir);
+
             File.Copy(builtVsixPath, vsix, force);
 
             l.Log($"VSIX generated at {Path.GetFullPath(vsix)}.");
