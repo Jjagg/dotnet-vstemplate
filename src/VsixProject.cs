@@ -93,10 +93,22 @@ namespace VSTemplate
             _itemGroup.Add(content);
         }
 
-        private void AddExternalContent(string path, string localName)
+        private bool AddExternalContent(string path, string localName, Logger l)
         {
-            File.Copy(path, Path.Combine(_rootDir, localName));
-            RegisterContent(localName);
+            var success = true;
+
+            try
+            {
+                File.Copy(path, Path.Combine(_rootDir, localName));
+                RegisterContent(localName);
+            }
+            catch (FileNotFoundException)
+            {
+                l.LogWarning($"File not found '{Path.GetFullPath(path)}'.");
+                success = false;
+            }
+
+            return success;
         }
 
         private void RegisterContent(string localName)
@@ -112,18 +124,18 @@ namespace VSTemplate
             _doc.Save(file);
         }
 
-        public static VsixProject Create(string rootDir, VsixProperties props)
+        public static VsixProject Create(string rootDir, VsixProperties props, Logger l)
         {
             var vsixProject = _vsixProjectTemplate.Value;
             var doc = XDocument.Parse(vsixProject);
             var project = new VsixProject(rootDir, doc);
-            project.WriteManifest(props);
-            project.WritePkgDef(props);
+            project.WriteManifest(props, l);
+            project.WritePkgDef(props, l);
 
             return project;
         }
 
-        private void WriteManifest(VsixProperties props)
+        private void WriteManifest(VsixProperties props, Logger l)
         {
             // The elements here need to be in this exact order or schema validation for the manifest fails.
 
@@ -146,8 +158,8 @@ namespace VSTemplate
             {
                 var ext = Path.GetExtension(props.License);
                 var localName = "license" + ext;
-                AddExternalContent(props.License, localName);
-                metadata.AddElement(_licenseName, localName);
+                if (AddExternalContent(props.License, localName, l))
+                    metadata.AddElement(_licenseName, localName);
             }
 
             // GettingStartedGuide - http(s) URL or local .html file
@@ -162,7 +174,7 @@ namespace VSTemplate
                 {
                     var ext = Path.GetExtension(props.GettingStartedGuide);
                     var localName = "getting-started" + ext;
-                    AddExternalContent(props.GettingStartedGuide, localName);
+                    if (AddExternalContent(props.GettingStartedGuide, localName, l))
                     metadata.AddElement(_gettingStartedGuideName, localName);
                 }
             }
@@ -179,8 +191,8 @@ namespace VSTemplate
                 {
                     var ext = Path.GetExtension(props.ReleaseNotes);
                     var localName = "release-notes" + ext;
-                    AddExternalContent(props.ReleaseNotes, localName);
-                    metadata.AddElement(_releaseNotesName, localName);
+                    if (AddExternalContent(props.ReleaseNotes, localName, l))
+                        metadata.AddElement(_releaseNotesName, localName);
                 }
             }
 
@@ -189,8 +201,8 @@ namespace VSTemplate
             {
                 var ext = Path.GetExtension(props.Icon);
                 var localName = "icon" + ext;
-                AddExternalContent(props.Icon, localName);
-                metadata.AddElement(_iconName, localName);
+                if (AddExternalContent(props.Icon, localName, l))
+                    metadata.AddElement(_iconName, localName);
             }
 
             // PreviewImage
@@ -205,8 +217,8 @@ namespace VSTemplate
                 else
                 {
                     var localName = "preview" + ext;
-                    AddExternalContent(props.PreviewImage, localName);
-                    metadata.AddElement(_previewImageName, localName);
+                    if (AddExternalContent(props.PreviewImage, localName, l))
+                        metadata.AddElement(_previewImageName, localName);
                 }
             }
 
@@ -216,7 +228,7 @@ namespace VSTemplate
             doc.Save(path);
         }
 
-        private void WritePkgDef(VsixProperties props)
+        private void WritePkgDef(VsixProperties props, Logger l)
         {
             var content = string.Format(_pkgDefTemplate, props.Id);
             var path = Path.Combine(_rootDir, "template.pkgdef");
