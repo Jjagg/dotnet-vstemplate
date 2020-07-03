@@ -33,6 +33,7 @@ namespace VSTemplate
                     Description = "Intermediate output folder. Defaults to './obj'."
                 }.LegalFilePathsOnly(),
 
+                new Option<string>("--vsix-version", "Override the version of the vsix package. Defaults to the version of the source nupkg (strips pre-release version; anything after a '-')."),
                 new Option<string>("--more-info", "VSIX MoreInfo property."),
                 new Option<string>("--license-file", "Path to the license file.").LegalFilePathsOnly(),
                 new Option<string>("--release-notes", "Path to file or URL to site of release notes."),
@@ -59,7 +60,11 @@ namespace VSTemplate
                 new Option<string[]>("--type-tags", () => new string[0], "Project type tags to add to the vstemplate.")
                 {
                     Argument = new Argument<string[]> { Arity = ArgumentArity.OneOrMore, }
-                }
+                },
+                new Option<string[]>("--default-name", () => new string[0], "Mapping for the default project name for the individual templates. This value can be extracted from the manifest.json file, see the docs.")
+                {
+                    Argument = new Argument<string[]> { Arity = ArgumentArity.OneOrMore, }
+                },
             }.WithHandler(CommandHandler.Create(Delegate.CreateDelegate(typeof(PackVsixDelegate), null, typeof(Program).GetMethod(nameof(PackVsix)))));
 
             var cmdConfig = new CommandLineConfiguration(
@@ -75,6 +80,7 @@ namespace VSTemplate
             string vsix,
             bool force,
             string obj,
+            string vsixVersion,
             string moreInfo,
             string licenseFile,
             string releaseNotes,
@@ -85,13 +91,15 @@ namespace VSTemplate
             string[] templateIcon,
             string[] languageTag,
             string[] platformTags,
-            string[] typeTags);
+            string[] typeTags,
+	    string[] defaultName);
 
         public static async Task<int> PackVsix(
             string source,
             string vsix,
             bool force,
             string obj,
+            string vsixVersion,
             string moreInfo,
             string licenseFile,
             string releaseNotes,
@@ -102,7 +110,8 @@ namespace VSTemplate
             string[] templateIcon,
             string[] languageTag,
             string[] platformTags,
-            string[] typeTags)
+            string[] typeTags,
+	    string[] defaultName)
         {
             var l = new Logger();
             if (!File.Exists(source))
@@ -117,6 +126,7 @@ namespace VSTemplate
             var languageTagMappings = languageTag?.Select(s => new TemplatePropertyMapping(s));
             var platformTagsMappings = platformTags?.Select(s => new TemplatePropertyMapping(s));
             var typeTagsMappings = typeTags?.Select(s => new TemplatePropertyMapping(s));
+            var defaultNameMappings = defaultName?.Select(s => new TemplatePropertyMapping(s));
 
             l.Log("Parsing NuGet metadata.");
 
@@ -133,6 +143,7 @@ namespace VSTemplate
                 return 1;
             }
 
+            if (vsixVersion != null) vsixProps.Version = vsixVersion;
             if (moreInfo != null) vsixProps.MoreInfo = moreInfo;
             if (licenseFile != null) vsixProps.License = licenseFile;
             if (releaseNotes != null) vsixProps.ReleaseNotes = releaseNotes;
@@ -152,8 +163,6 @@ namespace VSTemplate
 
             var templateContexts = new List<TemplateContext>();
 
-            var tags = new List<string>();
-
             foreach (var templateJsonFile in templateJsonFiles)
             {
                 var templateJsonContent = new StreamReader(templateJsonFile.Open()).ReadToEnd();
@@ -161,11 +170,13 @@ namespace VSTemplate
                 // TODO apply props overrides
                 var props = TemplateProperties.ParseTemplateJson(templateJsonContent);
 
-                props.Icon = MapTemplateProperties(props.Identity, templateIconMappings, tags)?.FirstOrDefault();
+                props.Icon = MapTemplateProperties(props.Identity, templateIconMappings)?.FirstOrDefault();
                 if (languageTagMappings != null && languageTagMappings.Any())
-                    props.LanguageTag = MapTemplateProperties(props.Identity, languageTagMappings, tags)?.FirstOrDefault();
-                props.PlatformTags = MapTemplateProperties(props.Identity, platformTagsMappings, tags);
-                props.ProjectTypeTags = MapTemplateProperties(props.Identity, typeTagsMappings, tags);
+                    props.LanguageTag = MapTemplateProperties(props.Identity, languageTagMappings)?.FirstOrDefault() ?? props.LanguageTag;
+                props.PlatformTags = MapTemplateProperties(props.Identity, platformTagsMappings);
+                props.ProjectTypeTags = MapTemplateProperties(props.Identity, typeTagsMappings);
+
+                props.DefaultName = MapTemplateProperties(props.Identity, defaultNameMappings)?.FirstOrDefault() ?? props.DefaultName;
 
                 var vsTemplate = CreateVSTemplate(true, props);
 
@@ -233,14 +244,12 @@ namespace VSTemplate
             return 0;
         }
 
-        private static string[] MapTemplateProperties(string identity, IEnumerable<TemplatePropertyMapping> mappings, List<string> reusableValues)
+        private static string[] MapTemplateProperties(string identity, IEnumerable<TemplatePropertyMapping> mappings)
         {
             if (mappings is null)
                 return null;
 
-            reusableValues.Clear();
-            reusableValues.AddRange(mappings.Where(m => m.AppliesTo(identity)).Select(m => m.Value));
-            return reusableValues.ToArray<string>();
+            return mappings.Where(m => m.AppliesTo(identity)).Select(m => m.Value).ToArray<string>();
         }
 
         public static bool BuildVsix(Logger l, string logDir, string projectFile)

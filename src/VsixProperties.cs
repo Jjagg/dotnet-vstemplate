@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using NuGet.Packaging;
 
@@ -21,7 +22,7 @@ namespace VSTemplate
         public static VsixProperties FromNuspec(IPackageMetadata metadata) => new VsixProperties
         {
             Id = metadata.Id,
-            Version = metadata.Version.ToFullString(),
+            Version = FixVersion(metadata.Version.ToFullString()),
             Publisher = metadata.Authors.FirstOrDefault(),
             Description = metadata.Description,
             DisplayName = metadata.Title,
@@ -33,5 +34,16 @@ namespace VSTemplate
             // Icon = metadata.Icon // needs to be copied
             // PreviewImage = metadata.Icon // needs to be copied
         };
+
+        private static string FixVersion(string version)
+        {
+            var dashIndex = version.IndexOf('-');
+            if (dashIndex >= 0)
+            {
+                version = version.Substring(0, dashIndex);
+            }
+
+            return version;
+        }
     }
 }

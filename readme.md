@@ -14,7 +14,7 @@ Generated VSIX packages support VS2017 and up.
 | .nuspec       | .vsix               | Argument          | Default |
 | ------------- | ------------------- | ----------------- | ------- |
 | id            | Id                  | /                 | NA      |
-| version       | Version             | /                 | NA      |
+| version       | Version             | --vsix-version    | NA      |
 | /             | Language            | /                 | en-us   |
 | authors       | Publisher           | /                 | NA      |
 | title         | DisplayName         | /                 | /       |
@@ -44,7 +44,7 @@ These command line arguments can all take in multiple values, e.g. `--template-i
 | name          | Name            | /               | NA      |
 | description   | Description     | /               | NA      |
 | /             | Icon            | --template-icon | /       |
-| defaultName   | DefaultName     | /               | /       |
+| defaultName   | DefaultName     | --default-name  | /       |
 | tags/language | LanguageTag     | --language-tag  | csharp  |
 | /             | PlatformTag     | --platform-tags | /       |
 | /             | ProjectTypeTag  | --project-tags  | /       |
