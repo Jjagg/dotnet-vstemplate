@@ -36,12 +36,19 @@ Options:
   -?, -h, --help                         Show help and usage information
   ```
 
-## Package property mapping
+## VSIX properties
+
+dotnet-vstemplate maps metadata to VSIX properties. For most properties
+there is a command line option to override the VSIX property.
+Below you'll find the mapping from NuGet metadata to VSIX metadata, the command
+line option to override the property and the default value that's used when the
+property is not in the NuGet metadata and no command line option for the property
+is specified.
 
 - .nuspec reference: https://docs.microsoft.com/en-us/nuget/reference/nuspec
 - VSIX reference: https://docs.microsoft.com/en-us/visualstudio/extensibility/vsix-extension-schema-2-0-reference?view=vs-2019
 
-| .nuspec       | .vsix               | Argument          | Default |
+| .nuspec       | .vsix               | Option            | Default |
 | ------------- | ------------------- | ----------------- | ------- |
 | id            | Id                  | /                 | NA      |
 | version       | Version             | --vsix-version    | NA      |
@@ -59,17 +66,19 @@ Options:
 
 ## Template property mapping
 
-- template.json reference: https://github.com/dotnet/templating/wiki/Reference-for-template.json
-- .vstemplate TemplateData reference: https://docs.microsoft.com/en-us/visualstudio/extensibility/templatedata-element-visual-studio-templates?view=vs-2019
-- VS2019+ template tags: https://docs.microsoft.com/en-us/visualstudio/ide/template-tags?view=vs-2019
+For individual templates, dotnet-vstemplate maps template.json properties to vstemplate properties.
+Just like the VSIX properties most can be overridden with a command line option.
 
-These properties apply per template. To set a property for a certain template you can use the following format: `[template-id]=[value]` (e.g. `--language-tag MyTemplate.CSharp=csharp`).
+These command line options apply per template. To set a property for a certain template you can use the following format: `[template-id]=[value]` (e.g. `--language-tag MyTemplate.CSharp=csharp`).
 If you omit the template id the value will be applied to all templates in the pack.
 You can use wildcards `*` in the template-id.
 These command line arguments can all take in multiple values, e.g. `--template-icon MyTemplate.One*=icon1.png MyTemplate.Two*=icon2.png`.
 
+- template.json reference: https://github.com/dotnet/templating/wiki/Reference-for-template.json
+- vstemplate TemplateData reference: https://docs.microsoft.com/en-us/visualstudio/extensibility/templatedata-element-visual-studio-templates?view=vs-2019
+- VS2019+ template tags: https://docs.microsoft.com/en-us/visualstudio/ide/template-tags?view=vs-2019
 
-| template.json | .vstemplate     | Argument        | Default |
+| template.json | vstemplate      | Option          | Default |
 | ------------- | --------------- | --------------- | ------- |
 | name          | Name            | /               | NA      |
 | description   | Description     | /               | NA      |
@@ -79,6 +88,6 @@ These command line arguments can all take in multiple values, e.g. `--template-i
 | /             | PlatformTag     | --platform-tags | /       |
 | /             | ProjectTypeTag  | --project-tags  | /       |
 
-Supported tags/language properties are C#, F# and VB.
+Supported tags/language in template.json for automatically mapping to vstemplate C#, F# and VB.
 
 
