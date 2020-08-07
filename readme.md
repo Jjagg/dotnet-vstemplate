@@ -5,6 +5,40 @@
 `dotnet-vstemplate` is a .NET Core tool for packing templates for the .NET Core Template Engine into VSIX project template packages.
 Generated VSIX packages support VS2017 and up.
 
+## Help
+
+```bash
+vstemplate --help
+```
+
+```bash
+Usage:
+  dotnet-vstemplate [options]
+
+Options:
+  -s, --source <source>                  NuGet package to generate a vsix file for.
+  --vsix <vsix>                          Output .vsix package path.
+  -f, --force                            Set to overwrite vsix at output path if it exists.
+  -o, --obj <obj>                        Intermediate output folder. Defaults to './obj'. [default: obj]
+  --vsix-version <vsix-version>          Override the version of the vsix package. Defaults to the version of the
+                                         source nupkg (strips pre-release version; anything after a '-').
+  --more-info <more-info>                VSIX MoreInfo property.
+  --license-file <license-file>          Path to the license file.
+  --release-notes <release-notes>        Path to file or URL to site of release notes.
+  --package-icon <package-icon>          Path to image to use for VSIX icon. (32x32)
+  --preview-img <preview-img>            Path to image to use for VSIX preview image. (200x200)
+  --package-tags <package-tags>          List of tags for the VSIX Tags property.
+  --getting-started <getting-started>    VSIX GettingStartedGuide property.
+  --template-icon <template-icon>        Mapping for icons for the individual templates.
+  --language-tag <language-tag>          Mapping for language tags for the individual templates. This value can be
+                                         extracted from the manifest.json file, see the docs.
+  --platform-tags <platform-tags>        Mapping for platform tags for the individual templates.
+  --type-tags <type-tags>                Project type tags to add to the vstemplate.
+  --default-name <default-name>          Mapping for the default project name for the individual templates. This value
+                                         can be extracted from the manifest.json file, see the docs.
+  --version                              Show version information
+  -?, -h, --help                         Show help and usage information
+  ```
 
 ## Package property mapping
 
