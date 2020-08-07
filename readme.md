@@ -90,4 +90,19 @@ These command line arguments can all take in multiple values, e.g. `--template-i
 
 Supported tags/language in template.json for automatically mapping to vstemplate C#, F# and VB.
 
+## Automation
+
+dotnet-vstemplate supports response files, i.e. passing a file with command line options.
+This makes it easy to maintain command line options to run dotnet-vstemplate with.
+To use a response file pass the `@<response file>` options
+
+```bash
+vstemplate @settings.rsp
+```
+
+For an example check out the usage in [MonoGame](https://monogame.net), where the VSIX packaging is
+completely automated:
+
+- [Call to dotnet-vstemplate in a CAKE build script](https://github.com/MonoGame/MonoGame/blob/687756238f4a660448526c3bf16e3db8bda8e7e2/build.cake#L224-L227)
+- [Response file that is passed to dotnet-vstemplate](https://github.com/MonoGame/MonoGame/blob/687756238f4a660448526c3bf16e3db8bda8e7e2/Templates/VisualStudio/settings.rsp)
 
