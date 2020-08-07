@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.CommandLine;
+using System.CommandLine.Builder;
 using System.CommandLine.Parsing;
 using System.Diagnostics;
 using System.IO;
@@ -17,13 +18,17 @@ namespace VSTemplate
     {
         private static Task<int> Main(string[] args)
         {
+            if (args.Length == 0)
+            {
+                args = new[] { "--help" };
+            }
+
             var root = new RootCommand
             {
                 new Option<string>(new string[] { "-s", "--source" })
                 {
                     Name = "Source",
                     Description = "NuGet package to generate a vsix file for.",
-                    Required = true
                 }.LegalFilePathsOnly(),
                 new Option<string>("--vsix", "Output .vsix package path.").LegalFilePathsOnly(),
                 new Option<bool>(new string[] { "-f", "--force" }, "Set to overwrite vsix at output path if it exists."),
@@ -67,10 +72,12 @@ namespace VSTemplate
                 },
             }.WithHandler(CommandHandler.Create(Delegate.CreateDelegate(typeof(PackVsixDelegate), null, typeof(Program).GetMethod(nameof(PackVsix)))));
 
-            var cmdConfig = new CommandLineConfiguration(
-                new[] { root },
-                responseFileHandling: ResponseFileHandling.ParseArgsAsSpaceSeparated);
-            var parser = new Parser(cmdConfig);
+            root.TreatUnmatchedTokensAsErrors = true;
+
+            var builder = new CommandLineBuilder(root);
+            builder.UseDefaults();
+            builder.ResponseFileHandling = ResponseFileHandling.ParseArgsAsSpaceSeparated;
+            var parser = builder.Build();
 
             return parser.InvokeAsync(args);
         }
@@ -92,7 +99,7 @@ namespace VSTemplate
             string[] languageTag,
             string[] platformTags,
             string[] typeTags,
-	    string[] defaultName);
+        string[] defaultName);
 
         public static async Task<int> PackVsix(
             string source,
@@ -111,9 +118,14 @@ namespace VSTemplate
             string[] languageTag,
             string[] platformTags,
             string[] typeTags,
-	    string[] defaultName)
+        string[] defaultName)
         {
             var l = new Logger();
+            if (source is null)
+            {
+                l.LogError("No source file given. Pass --help to show help text.");
+                return 1;
+            }
             if (!File.Exists(source))
             {
                 l.LogError($"Source file '{source}' does not exist.");
@@ -188,7 +200,7 @@ namespace VSTemplate
             // clear obj directory
             foreach (var fi in di.GetFiles()) fi.Delete();
             foreach (var fi in di.GetDirectories()) fi.Delete(true);
- 
+
             l.Log("Creating VSIX project.");
             l.Indent();
 
