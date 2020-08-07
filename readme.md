@@ -8,10 +8,6 @@ Generated VSIX packages support VS2017 and up.
 ## Help
 
 ```bash
-vstemplate --help
-```
-
-```bash
 Usage:
   dotnet-vstemplate [options]
 
