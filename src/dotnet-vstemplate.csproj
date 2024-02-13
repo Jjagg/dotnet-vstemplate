@@ -25,7 +25,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Setup.Configuration.Interop" Version="2.3.2262-g94fae01e" />
-    <PackageReference Include="NuGet.Packaging" Version="5.5.0" />
+    <PackageReference Include="NuGet.Packaging" Version="5.11.6" />
     <PackageReference Include="System.Commandline" Version="2.0.0-beta1.20371.2" />
   </ItemGroup>
 
